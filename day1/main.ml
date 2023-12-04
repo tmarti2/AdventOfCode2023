@@ -1,4 +1,4 @@
-open Aoclib
+open Aoclib.Day
 
 module Types = struct
   type input = string list [@@deriving show]
@@ -20,7 +20,6 @@ module Solving = struct
   type t = Int of int | Str of int
 
   let none_f ~f v = match v with None -> f () | Some _ -> v
-
   let get = function Int i | Str i -> i
 
   exception Found of t option
@@ -52,7 +51,7 @@ module Solving = struct
     let len = String.length s in
     try
       for i = 0 to len - 1 do
-        let id = (len - 1) - i in
+        let id = len - 1 - i in
         match search ~f s id s.[id] with
         | None -> ()
         | Some v -> raise (Found (Some v))
@@ -62,8 +61,8 @@ module Solving = struct
 
   let part_aux ~f input =
     let f s =
-      match find_first ~f s, find_last ~f s with
-      | Some i1, Some i2 -> ((get i1) * 10) + (get i2)
+      match (find_first ~f s, find_last ~f s) with
+      | Some i1, Some i2 -> (get i1 * 10) + get i2
       | _ -> 0
     in
     List.sum ~f (module Int) input

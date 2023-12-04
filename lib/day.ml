@@ -35,8 +35,8 @@ module Parsing = struct
       integer
 
   let word = take_while1 letter
-
-  let line = take_while1 (function '\n' -> false | _ -> true)
+  let not_nl = function '\n' -> false | _ -> true
+  let line = take_while1 not_nl
 
   (** [enclosed l p r] creates a parser [char l *> p <* char r]  *)
   let enclosed l p r = char l *> p <* char r

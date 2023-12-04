@@ -1,4 +1,4 @@
-open Aoclib
+open Aoclib.Day
 
 module Types = struct
   type set = { red : int; green : int; blue : int } [@@deriving show]
@@ -27,15 +27,12 @@ module Parsing = struct
         match c with
         | Red i -> { acc with red = i }
         | Green i -> { acc with green = i }
-        | Blue i -> { acc with blue = i }
-    )
+        | Blue i -> { acc with blue = i })
 
   let set = sep_by1 (string ", ") color >>| to_set
   let sets = sep_by1 (string "; ") set
   let id = string "Game " *> integer <* string ": "
-
   let game = lift2 (fun id sets -> { id; sets }) id sets
-
   let input = sep_by1 end_of_line game
 end
 
