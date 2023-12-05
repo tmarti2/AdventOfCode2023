@@ -23,10 +23,20 @@ end
 module Parsing = struct
   open Angstrom
 
-  let number = Base.Char.is_digit
+  let leading p q = many p *> q
+  let trailing p q = q <* many p
+
+  (** [enclosed l p r] creates a parser [char l *> p <* char r]  *)
+  let enclosed l p r = char l *> p <* char r
+
+  let not_nl = function '\n' -> false | _ -> true
+
+  let is_digit = Base.Char.is_digit
   let letter = Base.Char.is_alpha
+
   let space = char ' '
-  let integer = take_while1 number >>| int_of_string
+  let integer = take_while1 is_digit >>| int_of_string
+  let digit = satisfy is_digit >>| Base.Char.get_digit_exn
 
   let neg_integer =
     lift2
@@ -35,11 +45,8 @@ module Parsing = struct
       integer
 
   let word = take_while1 letter
-  let not_nl = function '\n' -> false | _ -> true
   let line = take_while1 not_nl
 
-  (** [enclosed l p r] creates a parser [char l *> p <* char r]  *)
-  let enclosed l p r = char l *> p <* char r
 end
 
 module MakeDay

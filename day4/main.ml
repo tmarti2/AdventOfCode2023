@@ -12,15 +12,13 @@ module Parsing = struct
   open Angstrom
   open Parsing
 
-  let nb = many (char ' ') *> integer
-  let num_list = sep_by1 (char ' ') nb
-  let sep = string " | "
-  let id = string "Card " *> nb <* string ": "
+  let num_list = sep_by1 space (leading space integer)
+  let id = string "Card " *> (leading space integer) <* string ": "
 
   let card =
     lift3
       (fun id left right -> { id; left; right })
-      id (num_list <* sep) num_list
+      id (num_list <* (string " | ")) num_list
 
   let input = sep_by1 end_of_line card
 end

@@ -13,7 +13,7 @@ module Parsing = struct
   open Angstrom
   open Parsing
 
-  let num = satisfy number >>| fun c -> Num (Base.Char.get_digit_exn c)
+  let num = digit >>| fun i -> Num i
   let dot = char '.' *> return Dot
   let symb = satisfy not_nl >>| fun c -> Symb c
   let line = many (num <|> dot <|> symb) >>| Array.of_list
