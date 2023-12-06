@@ -108,6 +108,3 @@ struct
 
   let run_all () = exit (Cmd.eval cmd)
 end
-
-(* Compose *)
-let ( << ) f g x = f (g x)

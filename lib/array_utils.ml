@@ -1,6 +1,5 @@
 open Base
-
-let ( << ) f g x = f (g x)
+open Aoclib.Misc_utils
 
 let pp_array pp_elem fmt s =
   let pp_sep ppf () = Stdlib.Format.fprintf ppf "|" in
@@ -12,8 +11,8 @@ let valid_map map (x, y) = valid map y && valid map.(y) x
 let get a x = if valid a x then Some a.(x) else None
 let get_map map (x, y) = if valid_map map (x, y) then Some map.(y).(x) else None
 
-let _adj x = [ x - 1; x + 1 ]
-let _adj_map (x, y) =
+let adj x = [ x - 1; x + 1 ]
+let adj_map (x, y) =
   [
     (x - 1, y - 1);
     (x - 1, y);
@@ -25,11 +24,11 @@ let _adj_map (x, y) =
     (x + 1, y + 1);
   ]
 
-let neightbors_cells a p = List.filter (_adj p) ~f:(valid a)
-let neightbors_cells_map a p = List.filter (_adj_map p) ~f:(valid_map a)
+let neightbors_cells a p = List.filter (adj p) ~f:(valid a)
+let neightbors_cells_map a p = List.filter (adj_map p) ~f:(valid_map a)
 
-let neightbors a p = List.filter_map (_adj p) ~f:(get a)
-let neightbors_map a p = List.filter_map (_adj_map p) ~f:(get_map a)
+let neightbors a p = List.filter_map (adj p) ~f:(get a)
+let neightbors_map a p = List.filter_map (adj_map p) ~f:(get_map a)
 
 let filter_aux ~get ~adj ~f a p =
   let f = Option.value_map ~default:false ~f in
