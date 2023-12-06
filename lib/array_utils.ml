@@ -1,5 +1,5 @@
 open Base
-open Aoclib.Misc_utils
+open Misc_utils
 
 let pp_array pp_elem fmt s =
   let pp_sep ppf () = Stdlib.Format.fprintf ppf "|" in

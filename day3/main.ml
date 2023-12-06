@@ -1,5 +1,5 @@
-open Aoclib.Day
-open Aoclib.Array_utils
+open Day
+open Array_utils
 
 module Types = struct
   type t = Num of int | Symb of char | Dot [@@deriving show]

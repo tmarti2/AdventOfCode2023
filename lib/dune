@@ -1,3 +1,4 @@
 (library
  (name aoclib)
+ (wrapped false)
  (libraries base stdio unix angstrom cmdliner))

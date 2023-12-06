@@ -1,4 +1,4 @@
-open Aoclib.Day
+open Day
 
 module Types = struct
   type card = { id : int; left : int list; right : int list } [@@deriving show]

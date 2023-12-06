@@ -1,4 +1,4 @@
-open Aoclib.Day
+open Day
 
 module Types = struct
   type interval = { start : int; len : int } [@@deriving show]
@@ -91,7 +91,7 @@ module Solving = struct
 
   let part2 (input : input) : output =
     let f start len = { start; len } in
-    Aoclib.List_utils.map_pairs input.seeds ~f |> part_aux input
+    List_utils.map_pairs input.seeds ~f |> part_aux input
 end
 
 module Today = MakeDay (Types) (Parsing) (Solving)

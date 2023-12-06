@@ -1,4 +1,4 @@
-open Aoclib.Day
+open Day
 
 module Types = struct
   type set = { red : int; green : int; blue : int } [@@deriving show]

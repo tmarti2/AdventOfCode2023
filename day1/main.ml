@@ -1,4 +1,4 @@
-open Aoclib.Day
+open Day
 
 module Types = struct
   type input = string list [@@deriving show]
