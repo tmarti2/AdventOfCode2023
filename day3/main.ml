@@ -48,15 +48,17 @@ module Solving = struct
             ~f:(fun x (acc, num, touch) cell ->
               match cell with
               | Dot ->
-                  let acc = if num <> 0 && touch then num :: acc else acc in
-                  (acc, 0, false)
-              | Num i when touch -> (acc, (num * 10) + i, touch)
-              | Num i -> (acc, (num * 10) + i, touch_symb map (x, y))
+                let acc = if num <> 0 && touch then num :: acc else acc in
+                acc, 0, false
+              | Num i when touch -> acc, (num * 10) + i, touch
+              | Num i -> acc, (num * 10) + i, touch_symb map (x, y)
               | Symb _ ->
-                  let acc = if num <> 0 then num :: acc else acc in
-                  (acc, 0, true))
+                let acc = if num <> 0 then num :: acc else acc in
+                acc, 0, true
+          )
         in
-        if num <> 0 && touch then num :: acc else acc)
+        if num <> 0 && touch then num :: acc else acc
+    )
 
   module Hashtbl = Stdlib.Hashtbl
 
@@ -68,21 +70,21 @@ module Solving = struct
       | Some nums -> Hashtbl.replace h p (num :: nums)
     in
     Array.iteri map ~f:(fun y line ->
-        let _ =
-          Array.foldi line
-            ~init:(0, Set.empty (module Coords_set))
-            ~f:(fun x (num, gears) cell ->
-              match cell with
-              | Dot | Symb _ ->
-                  if num <> 0 then Set.iter gears ~f:(fun p -> append p num);
-                  (0, Set.empty (module Coords_set))
-              | Num i when x = Array.length line - 1 ->
-                  let g' = Set.union gears (all_gears map (x, y)) in
-                  Set.iter g' ~f:(fun p -> append p ((num * 10) + i));
-                  (0, Set.empty (module Coords_set))
-              | Num i -> ((num * 10) + i, Set.union (all_gears map (x, y)) gears))
-        in
-        ());
+        Array.foldi line
+          ~init:(0, Set.empty (module Coords_set))
+          ~f:(fun x (num, gears) cell ->
+            match cell with
+            | Dot | Symb _ ->
+              if num <> 0 then Set.iter gears ~f:(fun p -> append p num);
+              0, Set.empty (module Coords_set)
+            | Num i when x = Array.length line - 1 ->
+              let g' = Set.union gears (all_gears map (x, y)) in
+              Set.iter g' ~f:(fun p -> append p ((num * 10) + i));
+              0, Set.empty (module Coords_set)
+            | Num i -> (num * 10) + i, Set.union (all_gears map (x, y)) gears
+          )
+        |> ignore
+    );
     Hashtbl.fold
       (fun _ nums acc -> if List.length nums > 1 then nums :: acc else acc)
       h []

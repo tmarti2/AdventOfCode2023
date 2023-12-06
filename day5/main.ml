@@ -17,11 +17,10 @@ module Parsing = struct
 
   let range =
     lift3
-      (fun dst src len -> ({ start = src; len }, { start = dst; len }))
+      (fun dst src len -> { start = src; len }, { start = dst; len })
       (integer <* space) (integer <* space) integer
 
   let map_name s = string s *> string " map:" *> end_of_line
-
   let sep = end_of_line *> end_of_line
   let map s = sep *> map_name s *> sep_by1 end_of_line range
 
@@ -43,8 +42,8 @@ end
 module Solving = struct
   open Base
 
-  (* Return a couple of interval (todo, done). Intersection between src and
-     dst is converted using conv. *)
+  (* Return a couple of interval (todo, done). Intersection between src and dst
+     is converted using conv. *)
   let split src dst conv =
     (* src = [a; b] *)
     let a = src.start in
@@ -70,12 +69,13 @@ module Solving = struct
     let rec aux acc ranges src =
       match ranges with
       | [] -> src :: acc
-      | (dst, conv) :: tl ->
+      | (dst, conv) :: tl -> (
         match split src dst conv with
         | None, None -> assert false
         | None, Some intv -> intv :: acc
         | Some todo, None -> aux acc tl todo
         | Some todo, Some intv -> aux (intv :: acc) tl todo
+      )
     in
     List.map ~f:(aux [] ranges) src |> List.concat
 

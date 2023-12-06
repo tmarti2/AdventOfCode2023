@@ -61,7 +61,7 @@ module Solving = struct
 
   let part_aux ~f input =
     let f s =
-      match (find_first ~f s, find_last ~f s) with
+      match find_first ~f s, find_last ~f s with
       | Some i1, Some i2 -> (get i1 * 10) + get i2
       | _ -> 0
     in

@@ -30,10 +30,8 @@ module Parsing = struct
   let enclosed l p r = char l *> p <* char r
 
   let not_nl = function '\n' -> false | _ -> true
-
   let is_digit = Base.Char.is_digit
   let letter = Base.Char.is_alpha
-
   let space = char ' '
   let integer = take_while1 is_digit >>| int_of_string
   let digit = satisfy is_digit >>| Base.Char.get_digit_exn
@@ -46,7 +44,6 @@ module Parsing = struct
 
   let word = take_while1 letter
   let line = take_while1 not_nl
-
 end
 
 module MakeDay
@@ -67,14 +64,13 @@ struct
       match state_to_unconsumed end_state with
       | None -> None
       | Some { buf; off; len } ->
-          if len = 0 then None else Some (Bigstringaf.substring buf ~off ~len)
+        if len = 0 then None else Some (Bigstringaf.substring buf ~off ~len)
     in
     let result =
-      match (result, unconsumed) with
+      match result, unconsumed with
       | x, None -> x
       | Ok _, Some u -> Error (Printf.sprintf "unconsumed: '%s'" u)
-      | Error msg, Some u ->
-          Error (Printf.sprintf "%s / unconsumed: '%s'" msg u)
+      | Error msg, Some u -> Error (Printf.sprintf "%s / unconsumed: '%s'" msg u)
     in
     match result with Ok v -> v | Error msg -> failwith msg
 

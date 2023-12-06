@@ -27,7 +27,8 @@ module Parsing = struct
         match c with
         | Red i -> { acc with red = i }
         | Green i -> { acc with green = i }
-        | Blue i -> { acc with blue = i })
+        | Blue i -> { acc with blue = i }
+    )
 
   let set = sep_by1 (string ", ") color >>| to_set
   let sets = sep_by1 (string "; ") set
@@ -43,7 +44,8 @@ module Solving = struct
 
   let filter_possible max games =
     List.filter_map games ~f:(fun game ->
-        if List.exists game.sets ~f:(exceed max) then None else Some game)
+        if List.exists game.sets ~f:(exceed max) then None else Some game
+    )
 
   let limit acc set =
     {
