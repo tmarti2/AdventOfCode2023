@@ -69,13 +69,13 @@ module Solving = struct
     let rec aux acc ranges src =
       match ranges with
       | [] -> src :: acc
-      | (dst, conv) :: tl -> (
+      | (dst, conv) :: tl -> begin
         match split src dst conv with
         | None, None -> assert false
         | None, Some intv -> intv :: acc
         | Some todo, None -> aux acc tl todo
         | Some todo, Some intv -> aux (intv :: acc) tl todo
-      )
+      end
     in
     List.map ~f:(aux [] ranges) src |> List.concat
 

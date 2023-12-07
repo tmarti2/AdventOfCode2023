@@ -3,3 +3,4 @@ wrap-comments = true
 line-endings = lf
 indicate-multiline-delimiters= closing-on-separate-line
 parens-tuple = multi-line-only
+exp-grouping = preserve
